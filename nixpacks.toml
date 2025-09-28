@@ -11,8 +11,11 @@ cmds = [
 [phases.build]
 cmds = [
   "cd frontend && npx ng build --configuration production",
+  "echo '=== Frontend build completed ==='",
   "ls -la frontend/dist/",
-  "ls -la frontend/dist/cars-maintenance/ || echo 'cars-maintenance folder not found'"
+  "ls -la frontend/dist/*/  || echo 'No subdirectory found'",
+  "find frontend/dist -name 'index.html' -type f || echo 'index.html not found'",
+  "echo '=== Build verification completed ==='"
 ]
 
 [start]

@@ -17,6 +17,10 @@ COPY frontend/ ./
 # Build de production Angular
 RUN npm run build:prod
 
+# Vérifier la structure de build
+RUN ls -la dist/
+RUN ls -la dist/*/ || echo "No subdirectory in dist"
+
 # Stage 2: Setup Backend + Frontend built
 FROM node:18-alpine AS production
 
@@ -36,7 +40,7 @@ RUN npm ci --only=production
 COPY server/ ./
 
 # Copier le frontend buildé depuis le stage précédent
-COPY --from=frontend-builder /app/frontend/dist/cars-maintenance /app/frontend/dist/cars-maintenance
+COPY --from=frontend-builder /app/frontend/dist /app/frontend/dist
 
 # Copier le package.json principal
 COPY package.json /app/

@@ -5,13 +5,14 @@ nixPkgs = ["nodejs_18", "npm"]
 cmds = [
   "npm ci",
   "cd frontend && npm ci",
-  "cd ../server && npm ci"
+  "cd ../server && npm ci --only=production"
 ]
 
 [phases.build]
 cmds = [
-  "cd frontend && npm run build:prod",
-  "ls -la frontend/dist/"
+  "cd frontend && npx ng build --configuration production",
+  "ls -la frontend/dist/",
+  "ls -la frontend/dist/cars-maintenance/ || echo 'cars-maintenance folder not found'"
 ]
 
 [start]

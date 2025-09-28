@@ -4,13 +4,13 @@
   "description": "Application complète de gestion d'entretien automobile",
   "scripts": {
     "build": "npm run install:all && npm run build:frontend",
-    "build:frontend": "cd frontend && npm ci && npm run build:prod",
-    "build:backend": "cd server && npm ci",
+    "build:frontend": "cd frontend && npm ci && npx ng build --configuration production",
+    "build:backend": "cd server && npm ci --only=production",
     "start": "cd server && npm start",
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
     "dev:frontend": "cd frontend && ng serve",
     "dev:backend": "cd server && npm run dev",
-    "install:all": "cd frontend && npm ci && cd ../server && npm ci",
+    "install:all": "cd frontend && npm ci && cd ../server && npm ci --only=production",
     "postinstall": "npm run build:frontend"
   },
   "devDependencies": {

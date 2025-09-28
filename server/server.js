@@ -24,12 +24,33 @@ app.use("/api/task", taskRoutes); // Task-related routes
 
 // Servir les fichiers statiques Angular (PRODUCTION)
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../frontend/dist/cars-maintenance')));
+  const frontendPath = path.join(__dirname, '../frontend/dist/cars-maintenance');
+
+  console.log('Frontend path:', frontendPath);
+  console.log('Index.html exists:', require('fs').existsSync(path.join(frontendPath, 'index.html')));
+
+  app.use(express.static(frontendPath));
 
   // Fallback pour les routes Angular (SPA)
   app.get('*', (req, res) => {
     if (!req.url.startsWith('/api')) {
-      res.sendFile(path.join(__dirname, '../frontend/dist/cars-maintenance/index.html'));
+      const indexPath = path.join(frontendPath, 'index.html');
+      if (require('fs').existsSync(indexPath)) {
+        res.sendFile(indexPath);
+      } else {
+        res.status(404).json({
+          error: 'Frontend not built yet',
+          path: indexPath,
+          suggestion: 'Run npm run build:frontend'
+        });
+      }
+    }
+  });
+} else {
+  // En développement, rediriger vers le serveur Angular
+  app.get('*', (req, res) => {
+    if (!req.url.startsWith('/api')) {
+      res.redirect('http://localhost:4200' + req.url);
     }
   });
 }

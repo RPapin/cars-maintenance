@@ -1,0 +1,21 @@
+[phases.setup]
+nixPkgs = ["nodejs_18", "npm"]
+
+[phases.install]
+cmds = [
+  "npm ci",
+  "cd frontend && npm ci",
+  "cd ../server && npm ci"
+]
+
+[phases.build]
+cmds = [
+  "cd frontend && npm run build:prod",
+  "ls -la frontend/dist/"
+]
+
+[start]
+cmd = "cd server && npm start"
+
+[variables]
+NODE_ENV = "production"

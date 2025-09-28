@@ -1,0 +1,99 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Ajouter une voiture</h1>
+    <p>Enregistre un nouveau véhicule</p>
+  </div>
+
+  <div class="form-container">
+    <form class="car-form" #carForm="ngForm" (ngSubmit)="onSubmit(carForm)">
+      <div class="form-group">
+        <label for="brand">Marque</label>
+        <input
+          type="text"
+          id="brand"
+          name="brand"
+          [(ngModel)]="car.brand"
+          required
+          #brand="ngModel">
+        <div *ngIf="brand.invalid && brand.touched" class="error-message">
+          La marque est obligatoire
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="model">Modèle</label>
+        <input
+          type="text"
+          id="model"
+          name="model"
+          [(ngModel)]="car.model"
+          required
+          #model="ngModel">
+        <div *ngIf="model.invalid && model.touched" class="error-message">
+          Le modèle est obligatoire
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="year">Année</label>
+        <input
+          type="number"
+          id="year"
+          name="year"
+          [(ngModel)]="car.year"
+          min="1900"
+          max="2025"
+          #year="ngModel">
+      </div>
+
+      <div class="form-group">
+        <label for="license_plate">Plaque d'immatriculation</label>
+        <input
+          type="text"
+          id="license_plate"
+          name="license_plate"
+          [(ngModel)]="car.license_plate"
+          #license_plate="ngModel">
+      </div>
+
+      <div class="form-group">
+        <label for="current_mileage">Kilométrage actuel</label>
+        <input
+          type="number"
+          id="current_mileage"
+          name="current_mileage"
+          [(ngModel)]="car.current_mileage"
+          min="0"
+          #current_mileage="ngModel">
+      </div>
+
+      <div class="form-group">
+        <label for="fuel_type">Type de carburant</label>
+        <select
+          id="fuel_type"
+          name="fuel_type"
+          [(ngModel)]="car.fuel_type"
+          #fuel_type="ngModel">
+          <option value="">Sélectionnez...</option>
+          <option value="gasoline">Essence</option>
+          <option value="diesel">Diesel</option>
+          <option value="electric">Électrique</option>
+          <option value="hybrid">Hybride</option>
+          <option value="lpg">GPL</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" routerLink="/" [disabled]="isSubmitting">
+          Annuler
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!isFormValid() || isSubmitting">
+          {{ isSubmitting ? 'Ajout en cours...' : 'Ajouter la voiture' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

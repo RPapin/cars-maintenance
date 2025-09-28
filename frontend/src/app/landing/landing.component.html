@@ -1,0 +1,146 @@
+<div class="dashboard">
+  <div class="quick-actions">
+    <h2>Actions rapides</h2>
+    <div class="action-cards">
+      <div class="action-card">
+        <div class="card-icon">📋</div>
+        <h3>Liste des voitures</h3>
+        <p>Consulte et gère toutes tes voitures</p>
+        <a routerLink="/car-list" class="btn btn-primary">Voir la liste</a>
+      </div>
+
+      <div class="action-card">
+        <div class="card-icon">🚗</div>
+        <h3>Ajouter une voiture</h3>
+        <p>Enregistre un nouveau véhicule dans ta flotte</p>
+        <a routerLink="/add-car" class="btn btn-primary">Ajouter</a>
+      </div>
+
+      <div class="action-card">
+        <div class="card-icon">📊</div>
+        <h3>Historique maintenances</h3>
+        <p>Consulte toutes les interventions effectuées</p>
+        <a routerLink="/maintenance-list" class="btn btn-primary">Voir l'historique</a>
+      </div>
+
+      <div class="action-card">
+        <div class="card-icon">🔧</div>
+        <h3>Nouvelle maintenance</h3>
+        <p>Enregistre une intervention d'entretien</p>
+        <a routerLink="/ajouter-maintenance" class="btn btn-primary">Ajouter</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="overview">
+    <h2>Aperçu</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">{{ cars.length }}</div>
+        <div class="stat-label">Véhicules enregistrés</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">{{ maintenances.length }}</div>
+        <div class="stat-label">Maintenances effectuées</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Alertes en cours</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tableaux récapitulatifs -->
+  <div class="summary-tables">
+    <div class="summary-section">
+      <div class="summary-header">
+        <h2>Dernières voitures ajoutées</h2>
+        <a routerLink="/car-list" class="view-all-link">Voir toutes</a>
+      </div>
+
+      @if (isLoadingCars) {
+        <div class="loading">Chargement des voitures...</div>
+      } @else if (cars.length === 0) {
+        <div class="empty-message">
+          <p>Aucune voiture enregistrée</p>
+          <a routerLink="/add-car" class="btn btn-primary">Ajouter ta première voiture</a>
+        </div>
+      } @else {
+        <div class="summary-table-container">
+          <table class="summary-table">
+            <thead>
+              <tr>
+                <th>Marque</th>
+                <th>Modèle</th>
+                <th>Année</th>
+                <th>Plaque</th>
+                <th>Carburant</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (car of cars; track car.id) {
+                <tr>
+                  <td>{{ car.brand }}</td>
+                  <td>{{ car.model }}</td>
+                  <td>{{ car.year || '-' }}</td>
+                  <td>{{ car.license_plate || '-' }}</td>
+                  <td>
+                    @switch (car.fuel_type) {
+                      @case ('gasoline') { Essence }
+                      @case ('diesel') { Diesel }
+                      @case ('electric') { Électrique }
+                      @case ('hybrid') { Hybride }
+                      @case ('lpg') { GPL }
+                      @default { - }
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+
+    <div class="summary-section">
+      <div class="summary-header">
+        <h2>Dernières maintenances</h2>
+        <a routerLink="/maintenance-list" class="view-all-link">Voir toutes</a>
+      </div>
+
+      @if (isLoadingMaintenances) {
+        <div class="loading">Chargement des maintenances...</div>
+      } @else if (maintenances.length === 0) {
+        <div class="empty-message">
+          <p>Aucune maintenance enregistrée</p>
+          <a routerLink="/ajouter-maintenance" class="btn btn-primary">Ajouter ta première maintenance</a>
+        </div>
+      } @else {
+        <div class="summary-table-container">
+          <table class="summary-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Voiture</th>
+                <th>Maintenance</th>
+                <th>Kilométrage</th>
+                <th>Coût</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (maintenance of maintenances; track maintenance.id) {
+                <tr>
+                  <td>{{ formatDate(maintenance.date) }}</td>
+                  <td>{{ maintenance.car_brand }} {{ maintenance.car_model }}</td>
+                  <td class="maintenance-desc">{{ maintenance.name }}</td>
+                  <td class="mileage">{{ maintenance.mileage | number }} km</td>
+                  <td class="cost">{{ formatCurrency(maintenance.cost) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </div>
+</div>

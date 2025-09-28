@@ -1,0 +1,113 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Ajouter une maintenance</h1>
+    <p>Enregistre une intervention d'entretien</p>
+  </div>
+
+  <div class="form-container">
+    @if (isLoadingCars) {
+      <div class="loading">Chargement des voitures...</div>
+    } @else if (cars.length === 0) {
+      <div class="empty-state">
+        <p>Aucune voiture enregistrée</p>
+        <p>Tu dois d'abord ajouter une voiture avant de pouvoir enregistrer une maintenance.</p>
+        <a routerLink="/add-car" class="btn btn-primary">Ajouter une voiture</a>
+      </div>
+    } @else {
+      <form class="maintenance-form" #maintenanceForm="ngForm" (ngSubmit)="onSubmit(maintenanceForm)">
+        <div class="form-group">
+          <label for="cars_id">Voiture *</label>
+          <select
+            id="cars_id"
+            name="cars_id"
+            [(ngModel)]="maintenance.cars_id"
+            required
+            #carId="ngModel"
+            [class.invalid]="(carId.invalid || maintenance.cars_id === 0) && carId.touched">
+            <option value="" disabled>Sélectionnez une voiture...</option>
+            @for (car of cars; track car.id) {
+              <option [value]="car.id">
+                {{ car.brand }} {{ car.model }} {{ car.year ? '(' + car.year + ')' : '' }}
+                {{ car.license_plate ? '- ' + car.license_plate : '' }}
+              </option>
+            }
+          </select>
+          <div *ngIf="(carId.invalid || maintenance.cars_id === 0) && carId.touched" class="error-message">
+            Sélectionne une voiture
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="name">Maintenance effectuée *</label>
+          <textarea
+            id="name"
+            name="name"
+            [(ngModel)]="maintenance.name"
+            rows="3"
+            placeholder="Décrivez la maintenance effectuée (ex: Vidange moteur, Changement plaquettes de frein...)"
+            required
+            #maintenanceDesc="ngModel"
+            [class.invalid]="maintenanceDesc.invalid && maintenanceDesc.touched"></textarea>
+          <div *ngIf="maintenanceDesc.invalid && maintenanceDesc.touched" class="error-message">
+            La description de la maintenance est obligatoire
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="date">Date de la maintenance *</label>
+          <input
+            type="date"
+            id="date"
+            name="date"
+            [(ngModel)]="maintenance.date"
+            required
+            #maintenanceDate="ngModel"
+            [class.invalid]="maintenanceDate.invalid && maintenanceDate.touched">
+          <div *ngIf="maintenanceDate.invalid && maintenanceDate.touched" class="error-message">
+            La date de maintenance est obligatoire
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="mileage">Kilométrage *</label>
+          <input
+            type="number"
+            id="mileage"
+            name="mileage"
+            [(ngModel)]="maintenance.mileage"
+            min="0"
+            required
+            #mileageInput="ngModel"
+            [class.invalid]="mileageInput.invalid && mileageInput.touched">
+          <div *ngIf="mileageInput.invalid && mileageInput.touched" class="error-message">
+            Le kilométrage est obligatoire
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="cost">Coût (€)</label>
+          <input
+            type="number"
+            id="cost"
+            name="cost"
+            [(ngModel)]="maintenance.cost"
+            min="0"
+            step="0.01"
+            placeholder="Coût de la maintenance">
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" routerLink="/" [disabled]="isSubmitting">
+            Annuler
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="maintenanceForm.invalid || isSubmitting">
+            {{ isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer la maintenance' }}
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+</div>

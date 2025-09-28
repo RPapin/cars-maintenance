@@ -1,0 +1,125 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Historique des maintenances</h1>
+    <p>Consulte toutes les interventions d'entretien</p>
+    <button class="btn btn-primary add-maintenance-btn" (click)="navigateToAddMaintenance()">
+      <i class="icon-plus"></i> Ajouter une maintenance
+    </button>
+  </div>
+
+  <div class="table-container">
+    @if (isLoading) {
+      <div class="loading">Chargement des maintenances...</div>
+    } @else if (maintenances.length === 0) {
+      <div class="empty-state">
+        <p>Aucune maintenance enregistrée</p>
+        <button class="btn btn-primary" (click)="navigateToAddMaintenance()">
+          Enregistrer ta première maintenance
+        </button>
+      </div>
+    } @else {
+      <table class="maintenances-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Voiture</th>
+            <th>Maintenance</th>
+            <th>Kilométrage</th>
+            <th>Coût</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (maintenance of maintenances; track maintenance.id) {
+            <tr class="maintenance-row" (dblclick)="startEdit(maintenance)" [class.editing]="isEditing(maintenance.id!)">
+
+              <!-- Mode édition -->
+              @if (isEditing(maintenance.id!)) {
+                <td class="date-cell">
+                  <input
+                    type="date"
+                    [(ngModel)]="editingMaintenance!.date"
+                    class="edit-input">
+                </td>
+                <td class="car-cell">
+                  <select
+                    [(ngModel)]="editingMaintenance!.cars_id"
+                    class="edit-select">
+                    @for (car of cars; track car.id) {
+                      <option [value]="car.id">
+                        {{ car.brand }} {{ car.model }}
+                        {{ car.year ? '(' + car.year + ')' : '' }}
+                        {{ car.license_plate ? '- ' + car.license_plate : '' }}
+                      </option>
+                    }
+                  </select>
+                </td>
+                <td class="maintenance-cell">
+                  <textarea
+                    [(ngModel)]="editingMaintenance!.name"
+                    class="edit-textarea"
+                    rows="2">
+                  </textarea>
+                </td>
+                <td class="mileage-cell">
+                  <input
+                    type="number"
+                    [(ngModel)]="editingMaintenance!.mileage"
+                    class="edit-input"
+                    min="0">
+                </td>
+                <td class="cost-cell">
+                  <input
+                    type="number"
+                    [(ngModel)]="editingMaintenance!.cost"
+                    class="edit-input"
+                    min="0"
+                    step="0.01"
+                    placeholder="Coût">
+                </td>
+                <td class="actions-cell">
+                  <button class="btn btn-sm btn-success" (click)="saveEdit()">
+                    Sauver
+                  </button>
+                  <button class="btn btn-sm btn-secondary" (click)="cancelEdit()">
+                    Annuler
+                  </button>
+                </td>
+              } @else {
+                <!-- Mode lecture -->
+                <td class="date-cell">{{ formatDate(maintenance.date) }}</td>
+                <td class="car-cell">
+                  <div class="car-info">
+                    <span class="car-name">{{ maintenance.car_brand }} {{ maintenance.car_model }}</span>
+                    @if (maintenance.car_license_plate) {
+                      <span class="car-plate">{{ maintenance.car_license_plate }}</span>
+                    }
+                  </div>
+                </td>
+                <td class="maintenance-cell">
+                  <div class="maintenance-desc">{{ maintenance.name }}</div>
+                </td>
+                <td class="mileage-cell">{{ maintenance.mileage | number }} km</td>
+                <td class="cost-cell">{{ formatCurrency(maintenance.cost) }}</td>
+                <td class="actions-cell">
+                  <button
+                    class="btn btn-sm btn-danger"
+                    (click)="deleteMaintenance(maintenance)"
+                    title="Supprimer">
+                    🗑️
+                  </button>
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <div class="table-info">
+        <p>Double-cliquez sur une ligne pour la modifier</p>
+        <p>{{ maintenances.length }} maintenance(s) enregistrée(s)</p>
+        <p>Total des coûts: {{ formatCurrency(getTotalCost()) }}</p>
+      </div>
+    }
+  </div>
+</div>

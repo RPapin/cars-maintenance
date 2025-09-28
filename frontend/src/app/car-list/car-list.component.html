@@ -1,0 +1,131 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Liste des voitures</h1>
+    <p>Gère ta flotte de véhicules</p>
+    <button class="btn btn-primary add-car-btn" (click)="navigateToAddCar()">
+      <i class="icon-plus"></i> Ajouter une voiture
+    </button>
+  </div>
+
+  <div class="table-container">
+    @if (isLoading) {
+      <div class="loading">Chargement des voitures...</div>
+    } @else if (cars.length === 0) {
+      <div class="empty-state">
+        <p>Aucune voiture enregistrée</p>
+        <button class="btn btn-primary" (click)="navigateToAddCar()">
+          Ajouter ta première voiture
+        </button>
+      </div>
+    } @else {
+      <table class="cars-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Marque</th>
+            <th>Modèle</th>
+            <th>Année</th>
+            <th>Plaque</th>
+            <th>Kilométrage</th>
+            <th>Carburant</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (car of cars; track car.id) {
+            <tr class="car-row" (dblclick)="startEdit(car)" [class.editing]="isEditing(car.id!)">
+              <td>{{ car.id }}</td>
+
+              <!-- Mode édition -->
+              @if (isEditing(car.id!)) {
+                <td>
+                  <input
+                    type="text"
+                    [(ngModel)]="editingCar!.brand"
+                    class="edit-input"
+                    required>
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    [(ngModel)]="editingCar!.model"
+                    class="edit-input"
+                    required>
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    [(ngModel)]="editingCar!.year"
+                    class="edit-input"
+                    min="1900"
+                    max="2025">
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    [(ngModel)]="editingCar!.license_plate"
+                    class="edit-input">
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    [(ngModel)]="editingCar!.current_mileage"
+                    class="edit-input"
+                    min="0">
+                </td>
+                <td>
+                  <select [(ngModel)]="editingCar!.fuel_type" class="edit-select">
+                    <option value="">-</option>
+                    <option value="gasoline">Essence</option>
+                    <option value="diesel">Diesel</option>
+                    <option value="electric">Électrique</option>
+                    <option value="hybrid">Hybride</option>
+                    <option value="lpg">GPL</option>
+                  </select>
+                </td>
+                <td class="actions-cell">
+                  <button class="btn btn-sm btn-success" (click)="saveEdit()">
+                    Sauver
+                  </button>
+                  <button class="btn btn-sm btn-secondary" (click)="cancelEdit()">
+                    Annuler
+                  </button>
+                </td>
+              } @else {
+                <!-- Mode lecture -->
+                <td>{{ car.brand }}</td>
+                <td>{{ car.model }}</td>
+                <td>{{ car.year || '-' }}</td>
+                <td>{{ car.license_plate || '-' }}</td>
+                <td>{{ car.current_mileage || '-' }}</td>
+                <td>
+                  @switch (car.fuel_type) {
+                    @case ('gasoline') { Essence }
+                    @case ('diesel') { Diesel }
+                    @case ('electric') { Électrique }
+                    @case ('hybrid') { Hybride }
+                    @case ('lpg') { GPL }
+                    @default { - }
+                  }
+                </td>
+                <td class="actions-cell">
+                  <button
+                    class="btn btn-sm btn-danger"
+                    (click)="deleteCar(car)"
+                    title="Supprimer">
+                    🗑️
+                  </button>
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <div class="table-info">
+        <p>Double-cliquez sur une ligne pour la modifier</p>
+        <p>{{ cars.length }} voiture(s) enregistrée(s)</p>
+      </div>
+    }
+  </div>
+</div>

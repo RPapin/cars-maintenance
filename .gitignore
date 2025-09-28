@@ -1,0 +1,320 @@
+# ===== CARS MAINTENANCE - GITIGNORE =====
+
+# ===== GENERAL =====
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+*.swo
+*~
+
+# ===== NODE.JS / NPM =====
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.npm
+.eslintcache
+
+# ===== ANGULAR FRONTEND =====
+frontend/dist/
+frontend/.angular/
+frontend/tmp/
+frontend/out-tsc/
+frontend/bazel-out/
+frontend/.sass-cache/
+frontend/connect.lock/
+frontend/coverage/
+frontend/libpeerconnection.log
+frontend/testem.log
+frontend/typings/
+
+# Angular e2e
+frontend/e2e/*.js
+frontend/e2e/*.map
+
+# ===== NODE.JS BACKEND =====
+server/node_modules/
+server/dist/
+server/build/
+server/coverage/
+server/logs/
+server/*.log
+
+# ===== ENVIRONMENT VARIABLES =====
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.development
+.env.staging
+.env.production
+
+# Secrets et configs sensibles
+server/.env
+frontend/.env
+config/secrets.json
+config/production.json
+config/development.json
+
+# ===== DATABASE =====
+*.sqlite
+*.sqlite3
+*.db
+database.sql
+dump.sql
+backup.sql
+
+# PostgreSQL
+*.pgsql
+
+# MySQL
+*.mysql
+
+# ===== DEPLOYMENT =====
+# Railway
+.railway/
+
+# Vercel
+.vercel/
+.now/
+
+# Netlify
+.netlify/
+netlify.toml
+
+# Heroku
+.slugignore
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# ===== IDE / EDITORS =====
+# VSCode
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# WebStorm / IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+*.swp
+*.swo
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# ===== SYSTEM FILES =====
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ===== LOGS =====
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# ===== RUNTIME =====
+.nyc_output/
+coverage/
+.cache/
+.parcel-cache/
+
+# ===== TEMP FILES =====
+temp/
+tmp/
+*.tmp
+*.temp
+
+# ===== ARCHIVES =====
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.war
+*.ear
+*.sar
+*.class
+
+# ===== CERTIFICATES & KEYS =====
+*.pem
+*.key
+*.crt
+*.cert
+*.p12
+*.pfx
+secrets/
+private/
+certs/
+
+# ===== GENERATED FILES =====
+# Build outputs
+build/
+dist/
+out/
+public/uploads/
+uploads/
+
+# Generated documentation
+docs/generated/
+typedoc/
+
+# ===== TESTING =====
+# Test results
+test-results/
+junit.xml
+coverage/
+.nyc_output/
+
+# E2E test artifacts
+frontend/e2e/screenshots/
+frontend/e2e/videos/
+
+# ===== PACKAGE MANAGERS =====
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# PNPM
+.pnpm-debug.log*
+.pnpm-store/
+
+# ===== RUNTIME DATA =====
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# ===== OPTIONAL =====
+# Dependency directories
+jspm_packages/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Optional npm cache directory
+.npm
+
+# Optional stylelint cache
+.stylelintcache
+
+# ===== CUSTOM PROJECT FILES =====
+# Fichiers de backup personnalisés
+*.backup
+*.bak
+*.orig
+
+# Fichiers de migration temporaires
+migrations/temp/
+seeds/temp/
+
+# Documentation temporaire
+docs/temp/
+documentation/temp/
+
+# Scripts de développement local
+scripts/local/
+dev-scripts/
+
+# Données de test
+test-data/
+mock-data/
+sample-data/
+
+# ===== MONITORING & ANALYTICS =====
+.next/
+.nuxt/
+.cache/
+.firebase/
+.vercel/
+
+# ===== PERFORMANCE =====
+# Bundle analyzer
+bundle-analyzer-report.html
+stats.json
+
+# Lighthouse reports
+lighthouse-reports/
+
+# ===== SECURITY =====
+# Security scan results
+security-reports/
+vulnerability-reports/
+
+# ===== FINAL NOTES =====
+# Ajouter ici des patterns spécifiques à ton projet si nécessaire
+# Exemple : fichiers de configuration locale
+# local-config.json

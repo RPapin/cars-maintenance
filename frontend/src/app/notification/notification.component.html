@@ -1,0 +1,23 @@
+@if (notifications.length > 0) {
+  <div class="notifications-container">
+    @for (notification of notifications; track notification.id) {
+      <div class="notification notification-{{notification.type}}"
+           [style.animation-delay]="$index * 100 + 'ms'">
+        <div class="notification-content">
+          <div class="notification-icon">
+            @switch (notification.type) {
+              @case ('success') { ✅ }
+              @case ('error') { ❌ }
+              @case ('warning') { ⚠️ }
+              @case ('info') { ℹ️ }
+            }
+          </div>
+          <div class="notification-message">{{ notification.message }}</div>
+          <button class="notification-close" (click)="closeNotification(notification.id)">×</button>
+        </div>
+        <div class="notification-progress"
+             [style.animation-duration]="notification.duration + 'ms'"></div>
+      </div>
+    }
+  </div>
+}

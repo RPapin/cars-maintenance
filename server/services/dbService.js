@@ -2,24 +2,26 @@ require("dotenv").config();
 const { Pool } = require("pg");
 
 // Check for required environment variables
-const requiredEnvVars = ['DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_NAME'];
-const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+// Accept either DB_* or Railway's POSTGRES* variables
+const dbHost = process.env.DB_HOST || process.env.PGHOST || process.env.POSTGRES_HOST;
+const dbUser = process.env.DB_USER || process.env.PGUSER || process.env.POSTGRES_USER;
+const dbPassword = process.env.DB_PASSWORD || process.env.PGPASSWORD || process.env.POSTGRES_PASSWORD;
+const dbName = process.env.DB_NAME || process.env.PGDATABASE || process.env.POSTGRES_DATABASE;
 
-if (missingVars.length > 0) {
-  console.error('Missing required environment variables:', missingVars);
-  console.error('Please set the following variables on Railway:');
-  missingVars.forEach(varName => {
-    console.error(`- ${varName}`);
-  });
+if (!dbHost || !dbUser || !dbPassword || !dbName) {
+  console.error('Missing required database configuration!');
+  console.error('Please ensure PostgreSQL service is linked on Railway or set local .env variables');
+  console.error('Required: DB_HOST, DB_USER, DB_PASSWORD, DB_NAME');
 }
 
 // Configure PostgreSQL connection
+// Railway provides POSTGRES* variables, fallback to DB_* for local development
 const pool = new Pool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: String(process.env.DB_PASSWORD),
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT || 5432, // Default PostgreSQL port
+  host: process.env.DB_HOST || process.env.PGHOST || process.env.POSTGRES_HOST,
+  user: process.env.DB_USER || process.env.PGUSER || process.env.POSTGRES_USER,
+  password: String(process.env.DB_PASSWORD || process.env.PGPASSWORD || process.env.POSTGRES_PASSWORD),
+  database: process.env.DB_NAME || process.env.PGDATABASE || process.env.POSTGRES_DATABASE,
+  port: process.env.DB_PORT || process.env.PGPORT || process.env.POSTGRES_PORT || 5432,
 });
 
 // Generic query function

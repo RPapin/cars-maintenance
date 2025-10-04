@@ -66,9 +66,14 @@ app.get('/api/health', (req, res) => {
 
 const PORT = process.env.APP_PORT || process.env.PORT || 3000;
 
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, '0.0.0.0', (err) => {
+  if (err) {
+    console.error('❌ Failed to start server:', err);
+    process.exit(1);
+  }
   console.log(`🚂 Cars Maintenance Server running on port ${PORT}`);
   console.log(`🌐 Frontend: http://localhost:${PORT}`);
   console.log(`🔗 API: http://localhost:${PORT}/api`);
   console.log(`📊 Health: http://localhost:${PORT}/api/health`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
 });

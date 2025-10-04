@@ -4,7 +4,8 @@
       "Bash(ng generate:*)",
       "Bash(pkill:*)",
       "Bash(taskkill:*)",
-      "Bash(tasklist)"
+      "Bash(tasklist)",
+      "Bash(railway logs:*)"
     ],
     "deny": [],
     "ask": []

@@ -40,7 +40,7 @@ RUN npm ci --only=production
 COPY server/ ./
 
 # Copier le frontend buildé depuis le stage précédent
-COPY --from=frontend-builder /app/frontend/dist /app/frontend/dist
+COPY --from=frontend-builder /app/frontend/dist/cars-maintenance /app/frontend/dist/cars-maintenance
 
 # Copier le package.json principal
 COPY package.json /app/
